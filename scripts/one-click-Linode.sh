@@ -105,7 +105,7 @@ function download_bootstrap_script(){
     # Get current bootstrap script
     if [ ! -f "$DROPLET_USERDATA_SCRIPT" ]; then
         echo "$SHELL_LOG_PREFIX begin to download bootstrap script..."
-        curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
+        curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
         if [ $? != 0 ] || [ ! -f "$DROPLET_USERDATA_SCRIPT" ]; then
             echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
             exit 1

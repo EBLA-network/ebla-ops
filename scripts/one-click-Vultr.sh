@@ -57,7 +57,7 @@ if [[ -z $VULTR_API_KEY ]]; then
 fi
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1

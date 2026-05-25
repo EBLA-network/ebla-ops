@@ -11,14 +11,14 @@ Run the following command to start ebla-node in a terminal:
 
 ```
 cd ebla_compose
-docker-compose up
+docker compose up
 ```
 
 It can also be started as a background service:
 
 ```
 cd ebla_compose
-docker-compose up -d
+docker compose up -d
 ```
 
 # Running Ebla-node at Digital Ocean
@@ -33,7 +33,7 @@ You may export your token as the env var `DIGITALOCEAN_ACCESS_TOKEN` or insert i
 
 To have your Ebla-node Runing just run:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-DO.sh)"
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/one-click-DO.sh)"
 ```
 
 Each time you run the script, a new droplet will be launched at Digital Ocean.
@@ -48,7 +48,7 @@ Now lets create our `ebla-node` droplet.
 2.  Choose the Ubuntu 18.04.3 (LTS) x64 image.
 3.  Choose a  [plan and size](https://www.digitalocean.com/docs/droplets/#plans-and-pricing)  for your Droplet, which determines its RAM, disk space, and vCPUs as well as its price. Learn more about  [how to choose the right Droplet plan](https://www.digitalocean.com/docs/droplets/resources/choose-plan/). We recommend at least 2GB of RAM.
 5.  Choose a  [datacenter region](https://www.digitalocean.com/docs/droplets/#regional-availability). It can be any one available.
-6.  Select additional options `User Data` and add this [script](https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh) content to the `User Data` field bellow.
+6.  Select additional options `User Data` and add this [script](https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh) content to the `User Data` field bellow.
 7.  Choose an  [SSH key](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/), if you’ve added one. If you choose not to use SSH keys, your Droplet’s password will be emailed to you after creation.
 8.  Enter a name and click  **Create**. We suggest `ebla-node`
 
@@ -84,10 +84,10 @@ You need an AWS account with configured credentials. If you'd like the ability t
 
 To have your Ebla-node running just run:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-AWS.sh)"
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/one-click-AWS.sh)"
 ```
 or if you already have an ssh key to use with your Ebla-node, run the command and pass in the name of your ssh key:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-AWS.sh)" {KEYNAME}
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/one-click-AWS.sh)" {KEYNAME}
 ```
 Each time you run the script a new ec2 instance will be created.

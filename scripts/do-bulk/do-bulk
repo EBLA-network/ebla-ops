@@ -14,7 +14,7 @@ from eth_utils.curried import keccak
 DROPLET_BASE_NAME = "ebla-node-oneclick"
 DROPLET_SIZE = "c-4"
 DROPLET_IMAGE = "ubuntu-20-04-x64"
-DROPLET_USER_DATA_SCRIPT = "https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/prepare/do.sh"
+DROPLET_USER_DATA_SCRIPT = "https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/prepare/do.sh"
 VOLUME_SIZE = 250
 
 @click.group()

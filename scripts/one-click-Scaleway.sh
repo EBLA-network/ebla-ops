@@ -137,7 +137,7 @@ DROPLET_USERDATA_SCRIPT=$(cat << EOF
 #cloud-config
 runcmd:
    - mkdir /ebla-oneclick
-   - curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output /ebla-oneclick/bootstrap-userdata.sh
+   - curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh --output /ebla-oneclick/bootstrap-userdata.sh
    - sed -i -e 's/REPLACEWITHNODETYPE/${NODETYPE}/g' /ebla-oneclick/bootstrap-userdata.sh
    - chmod 755 /ebla-oneclick/bootstrap-userdata.sh
    - /ebla-oneclick/bootstrap-userdata.sh

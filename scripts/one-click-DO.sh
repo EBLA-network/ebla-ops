@@ -39,7 +39,7 @@ if [ "$RETURN" != 0 ]; then
 fi
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/prepare/do.sh --output ${DROPLET_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/prepare/do.sh --output ${DROPLET_USERDATA_SCRIPT}
 
 # Set the node type in the ubuntu install script
 DROPLET_USERDATA_SCRIPT_CONTENT=$(cat "$DROPLET_USERDATA_SCRIPT")

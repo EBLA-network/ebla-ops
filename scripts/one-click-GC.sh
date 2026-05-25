@@ -50,11 +50,11 @@ fi
 SHELL_LOG_PREFIX='[ebla-oneclick-gc]'
 
 EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
-STARTUP_SCRIPT=https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh
+STARTUP_SCRIPT=https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh
 
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${STARTUP_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh --output ${STARTUP_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1

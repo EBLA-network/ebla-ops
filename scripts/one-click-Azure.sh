@@ -165,7 +165,7 @@ az vm extension set \
   --resource-group ${AZ_GROUP_NAME} \
   --vm-name ${AZ_APP_SERVICE_NAME} --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh"],"commandToExecute": "sed -i -e 's/REPLACEWITHNODETYPE/$NODETYPE/g' ./ubuntu-install-and-run-node.sh && ./ubuntu-install-and-run-node.sh"}' > /dev/null
+  --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/EBLA-network/ebla-ops/ebla-stable/scripts/ubuntu-install-and-run-node.sh"],"commandToExecute": "sed -i -e 's/REPLACEWITHNODETYPE/$NODETYPE/g' ./ubuntu-install-and-run-node.sh && ./ubuntu-install-and-run-node.sh"}' > /dev/null
 
 if [ $? != 0 ]; then 
   echo "Error creating VM"
