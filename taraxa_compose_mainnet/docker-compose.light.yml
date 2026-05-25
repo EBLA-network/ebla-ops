@@ -9,7 +9,7 @@ services:
       - NODE_TYPE=light
     command: /bin/sh /snapshot-init.sh
   node:
-    image: ebla-network/ebla-node:v1.14.2
+    image: ghcr.io/ebla-network/ebla-node:ebla-stable
     restart: always
     ports:
       - "10002:10002"
@@ -27,7 +27,7 @@ services:
       snapshot-puller:
         condition: service_completed_successfully
   status-app:
-    image: ebla-network/ebla-node-status:latest
+    image: ghcr.io/ebla-network/ebla-node-status:ebla-stable
     environment:
       - NEXT_PUBLIC_RPC=http://node:7777
     restart: always
