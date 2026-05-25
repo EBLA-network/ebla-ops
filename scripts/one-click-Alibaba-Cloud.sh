@@ -12,25 +12,25 @@ fi
 
 SHELL_LOG_PREFIX='[oneclick-alibaba-cloud]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 
-ALYCLI_PATH=${TARAXA_ONE_CLICK_PATH}/aliyun
+ALYCLI_PATH=${EBLA_ONE_CLICK_PATH}/aliyun
 ALYCLI_VERSION=3.0.81
 
-JQCLI_PATH=${TARAXA_ONE_CLICK_PATH}/jq
+JQCLI_PATH=${EBLA_ONE_CLICK_PATH}/jq
 
-DROPLET_USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
-DROPLET_BASE_NAME=taraxa-node-oneclick
+DROPLET_USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+DROPLET_BASE_NAME=ebla-node-oneclick
 # Ubuntu 20.04 x64
 DROPLET_IMAGE_ID="ubuntu_20_04_x64_20G_alibase_20210521.vhd"
 DROPLET_REGION_ID="cn-hangzhou"
 DROPLET_CPU_CORES=4
 DROPLET_MEMORY=8
 DROPLET_INSTANCE_TYPE_ID="ecs.c6.xlarge"
-DROPLET_SCRIPT_NAME="taraxa-node-oneclick"
+DROPLET_SCRIPT_NAME="ebla-node-oneclick"
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 # Get alibaba cloud cli (we want it to always overwrite it)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -70,7 +70,7 @@ if [ $? != 0 ] || [ ! -f "$JQCLI_PATH" ]; then
 else
     echo "$SHELL_LOG_PREFIX download jq json parser success!"
 fi
-echo '{"note": "Taraxa is an excellent project!"}' | $JQCLI_PATH '.note' > /dev/null || { echo "$SHELL_LOG_PREFIX Jq parser failed, it is possible that the script is not suitable for your operating system." ; exit 1 ; }
+echo '{"note": "Ebla is an excellent project!"}' | $JQCLI_PATH '.note' > /dev/null || { echo "$SHELL_LOG_PREFIX Jq parser failed, it is possible that the script is not suitable for your operating system." ; exit 1 ; }
 
 # Check permissions
 # How to get aliyun AK: https://usercenter.console.aliyun.com/#/manage/ak
@@ -93,7 +93,7 @@ $ALYCLI_PATH configure set \
 $ALYCLI_PATH ecs DescribeRegions > /dev/null || { echo "$SHELL_LOG_PREFIX Invalid Token." ; exit 1 ; }
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1
@@ -146,7 +146,7 @@ echo "$SHELL_LOG_PREFIX Select random region: $DROPLET_REGION_ID"
 
 # Check SSH Key Pair
 sleep 1
-DROPLET_KEY_PAIR_NAME='kp-taraxa-node-oneclick'
+DROPLET_KEY_PAIR_NAME='kp-ebla-node-oneclick'
 DROPLET_KEY_PAIR_DESCRIBE=$($ALYCLI_PATH ecs DescribeKeyPairs --RegionId $DROPLET_REGION_ID --KeyPairName $DROPLET_KEY_PAIR_NAME | $JQCLI_PATH '.KeyPairs.KeyPair[0]')
 if [[ -z $DROPLET_KEY_PAIR_DESCRIBE ]] || [ "$DROPLET_KEY_PAIR_DESCRIBE" == 'null' ]; then
     echo "$SHELL_LOG_PREFIX No available Key Pair in $DROPLET_REGION_ID, begin to create Key Pair..."
@@ -206,7 +206,7 @@ echo "$SHELL_LOG_PREFIX We will use this VPC: $DROPLET_VPC_ID"
 echo "$SHELL_LOG_PREFIX Query Security Group in $DROPLET_REGION_ID and VpcId($DROPLET_VPC_ID)..."
 sleep 5
 DROPLET_SG_ID=""
-DROPLET_SG_NAME="sg-taraxa-node-oneclick"
+DROPLET_SG_NAME="sg-ebla-node-oneclick"
 DROPLET_SG_QUERY=$($ALYCLI_PATH ecs DescribeSecurityGroups --RegionId $DROPLET_REGION_ID --VpcId $DROPLET_VPC_ID --SecurityGroupName $DROPLET_SG_NAME | $JQCLI_PATH '.SecurityGroups.SecurityGroup[0]')
 if [[ -z $DROPLET_SG_QUERY ]] || [ "$DROPLET_SG_QUERY" == 'null' ]; then
     echo "$SHELL_LOG_PREFIX No available Security Group in $DROPLET_REGION_ID ($DROPLET_VPC_ID), begin to create Security Group..."
@@ -272,7 +272,7 @@ if [[ -z $DROPLET_VSWITCH_QUERY ]] || [ "$DROPLET_VSWITCH_QUERY" == "null" ]; th
     elif [[ $DROPLET_ZONE_ID == *p ]]; then
         DROPLET_VPC_SUB_CIDR_BLOCK="10.88.240.0/20"
     else
-        echo "$SHELL_LOG_PREFIX Sorry, unknown zone, please contact taraxa devops..."
+        echo "$SHELL_LOG_PREFIX Sorry, unknown zone, please contact ebla devops..."
         exit 1
     fi
     echo "$SHELL_LOG_PREFIX VSwitch VPC Cidr Block: $DROPLET_VPC_SUB_CIDR_BLOCK"

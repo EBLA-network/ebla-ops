@@ -12,18 +12,18 @@ fi
 
 SHELL_LOG_PREFIX='[oneclick-linode]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 
-DROPLET_USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
-DROPLET_BASE_NAME=taraxa-node-oneclick
+DROPLET_USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+DROPLET_BASE_NAME=ebla-node-oneclick
 DROPLET_IMAGE_ID="linode/ubuntu20.04"
 DROPLET_REGION_ID="ap-west"
 # g6-standard-4: 4C/8G/160GB Storage
 DROPLET_INSTANCE_TYPE_ID="g6-standard-4"
-DROPLET_SCRIPT_NAME="taraxa-node-oneclick"
+DROPLET_SCRIPT_NAME="ebla-node-oneclick"
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 function detect_distro() {
     if [[ $OSTYPE == linux-android* ]]; then
@@ -105,7 +105,7 @@ function download_bootstrap_script(){
     # Get current bootstrap script
     if [ ! -f "$DROPLET_USERDATA_SCRIPT" ]; then
         echo "$SHELL_LOG_PREFIX begin to download bootstrap script..."
-        curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
+        curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
         if [ $? != 0 ] || [ ! -f "$DROPLET_USERDATA_SCRIPT" ]; then
             echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
             exit 1
@@ -217,18 +217,18 @@ echo "$SHELL_LOG_PREFIX Select script id: $DROPLET_SCRIPT_ID"
 
 # Get sshkeys
 echo "$SHELL_LOG_PREFIX begin to check sshkeys..."
-DROPLET_SSHKEY_NAME="sk-taraxa-node-oneclick"
+DROPLET_SSHKEY_NAME="sk-ebla-node-oneclick"
 DROPLET_SSHKEY_LIST=$(linode-cli sshkeys list --json --pretty | jq --arg DROPLET_SSHKEY_NAME $DROPLET_SSHKEY_NAME '.[] | select(.label==$DROPLET_SSHKEY_NAME)')
 if [ -z "$DROPLET_SSHKEY_LIST" ] || [ "$DROPLET_SSHKEY_LIST" == 'null' ]; then
-    echo "$SHELL_LOG_PREFIX There is no ssh public key for Taraxa node, begin to create sshkeys..."
-    SSH_KEY_PATH=$(echo "$HOME/.ssh/taraxa_node_oneclick_rsa.pub")
+    echo "$SHELL_LOG_PREFIX There is no ssh public key for Ebla node, begin to create sshkeys..."
+    SSH_KEY_PATH=$(echo "$HOME/.ssh/ebla_node_oneclick_rsa.pub")
     if [ -f $SSH_KEY_PATH ]; then
-        echo "$SHELL_LOG_PREFIX found ~/.ssh/taraxa_node_oneclick_rsa.pub, we will use it."
+        echo "$SHELL_LOG_PREFIX found ~/.ssh/ebla_node_oneclick_rsa.pub, we will use it."
     else
         echo "$SHELL_LOG_PREFIX begin to generate ssh key..."
-        ssh-keygen -t rsa -b 4096 -P "" -f ~/.ssh/taraxa_node_oneclick_rsa -C "root"
+        ssh-keygen -t rsa -b 4096 -P "" -f ~/.ssh/ebla_node_oneclick_rsa -C "root"
     fi
-    DROPLET_SSHKEY_CREATE_LIST=$(linode-cli sshkeys create --label "$DROPLET_SSHKEY_NAME" --ssh_key "$(cat ~/.ssh/taraxa_node_oneclick_rsa.pub)" --json --pretty | jq '.[0]')
+    DROPLET_SSHKEY_CREATE_LIST=$(linode-cli sshkeys create --label "$DROPLET_SSHKEY_NAME" --ssh_key "$(cat ~/.ssh/ebla_node_oneclick_rsa.pub)" --json --pretty | jq '.[0]')
     DROPLET_SSHKEY_PUBLIC_KEY=$(echo "$DROPLET_SSHKEY_CREATE_LIST" | jq -r '. | .ssh_key')
 else
     DROPLET_SSHKEY_PUBLIC_KEY=$(echo "$DROPLET_SSHKEY_LIST" | jq -s -r '.[0] | .ssh_key')

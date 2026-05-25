@@ -1,30 +1,30 @@
-# Taraxa Node Running Repository
-Taraxa node operation master repository
+# Ebla Node Running Repository
+Ebla node operation master repository
 
-![Image of Taraxa Californicum](https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/taraxa_californicum.png)
+![Image of Ebla Californicum](https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/ebla_californicum.png)
 
 
-# Running Taraxa-node with docker-compose
+# Running Ebla-node with docker-compose
 
 Clone the repository to your machine that has Docker installed.
 
-Run the following command to start taraxa-node in a terminal:
+Run the following command to start ebla-node in a terminal:
 
 ```
-cd taraxa_compose
+cd ebla_compose
 docker-compose up
 ```
 
 It can also be started as a background service:
 
 ```
-cd taraxa_compose
+cd ebla_compose
 docker-compose up -d
 ```
 
 # Snapshot Management
 
-The Taraxa node automatically downloads the latest blockchain snapshot on first start to speed up synchronization. The snapshot-puller container handles this process before the node starts.
+The Ebla node automatically downloads the latest blockchain snapshot on first start to speed up synchronization. The snapshot-puller container handles this process before the node starts.
 
 ## Default Behavior
 
@@ -53,7 +53,7 @@ environment:
 To use a specific snapshot instead of the latest:
 ```yaml
 environment:
-  - SNAPSHOT_URL=https://storage.googleapis.com/taraxa-snapshot/mainnet-light-db-block-19951895-20250723-044758.tar.gz
+  - SNAPSHOT_URL=https://storage.googleapis.com/ebla-snapshot/mainnet-light-db-block-19951895-20250723-044758.tar.gz
 ```
 
 ### Force Fresh Snapshot Download
@@ -81,7 +81,7 @@ This approach allows you to save disk space by regularly refreshing with the lat
 snapshot-puller:
   image: alpine:latest
   volumes:
-    - ./data:/opt/taraxa_data/data
+    - ./data:/opt/ebla_data/data
     - ./snapshot-init.sh:/snapshot-init.sh:ro
   environment:
     - NETWORK=mainnet
@@ -96,7 +96,7 @@ For users who want to save space without waiting for light node sync:
 snapshot-puller:
   image: alpine:latest
   volumes:
-    - ./data:/opt/taraxa_data/data
+    - ./data:/opt/ebla_data/data
     - ./snapshot-init.sh:/snapshot-init.sh:ro
   environment:
     - NETWORK=mainnet
@@ -111,8 +111,8 @@ node:
 
 **Important:** After the snapshot is downloaded and your node is confirmed to be running successfully, it is **highly advisable to set `DELETE_DATA=false`**. Only switch it back to `true` when you intentionally want to force delete the data and download a fresh snapshot. Leaving `DELETE_DATA=true` permanently could result in unintended data loss on container restarts.
 
-# Running Taraxa-node at Digital Ocean
-You only need a Digital Ocean account to be able to run a Taraxa-node against the testnet.
+# Running Ebla-node at Digital Ocean
+You only need a Digital Ocean account to be able to run a Ebla-node against the testnet.
 Follow this instructions to get a Digital Ocean account https://www.digitalocean.com/docs/getting-started/sign-up/
 
 ## One Click Install
@@ -121,15 +121,15 @@ Follow [here](https://www.digitalocean.com/docs/api/create-personal-access-token
 
 You may export your token as the env var `DIGITALOCEAN_ACCESS_TOKEN` or insert it when script ask for it.
 
-To have your Taraxa-node Runing just run:
+To have your Ebla-node Runing just run:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/one-click-DO.sh)"
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-DO.sh)"
 ```
 
 Each time you run the script, a new droplet will be launched at Digital Ocean.
 
 ## Running it manually
-Now lets create our `taraxa-node` droplet.
+Now lets create our `ebla-node` droplet.
 
 ### Create the droplet
 #TODO: Verify recommended resources
@@ -138,9 +138,9 @@ Now lets create our `taraxa-node` droplet.
 2.  Choose the Ubuntu 18.04.3 (LTS) x64 image.
 3.  Choose a  [plan and size](https://www.digitalocean.com/docs/droplets/#plans-and-pricing)  for your Droplet, which determines its RAM, disk space, and vCPUs as well as its price. Learn more about  [how to choose the right Droplet plan](https://www.digitalocean.com/docs/droplets/resources/choose-plan/). We recommend at least 2GB of RAM.
 5.  Choose a  [datacenter region](https://www.digitalocean.com/docs/droplets/#regional-availability). It can be any one available.
-6.  Select additional options `User Data` and add this [script](https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh) content to the `User Data` field bellow.
+6.  Select additional options `User Data` and add this [script](https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh) content to the `User Data` field bellow.
 7.  Choose an  [SSH key](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/), if you’ve added one. If you choose not to use SSH keys, your Droplet’s password will be emailed to you after creation.
-8.  Enter a name and click  **Create**. We suggest `taraxa-node`
+8.  Enter a name and click  **Create**. We suggest `ebla-node`
 
 ### Connect to Droplets
 
@@ -154,11 +154,11 @@ To connect by using a terminal on Linux, macOS, or Windows Subsystem for Linux:
 Windows users can alternatively  [connect with PuTTY](https://www.digitalocean.com/docs/droplets/how-to/connect-with-ssh/putty/).
 When you’ve logged in, your command prompt changes and you’ll see a welcome screen.
 
-### Read Taraxa-node logs
+### Read Ebla-node logs
 Run this command after connected to the Droplet.
 
 ```
-docker logs taraxa-node
+docker logs ebla-node
 ```
 
 If you wish to tail the logs, add `-f` to the command above. **Ctrl**-**C** is needed to stop the tail.
@@ -166,18 +166,18 @@ If you wish to tail the logs, add `-f` to the command above. **Ctrl**-**C** is n
 # Interacting with your node and the Network.
 #TODO
 
-# Running Taraxa-node at AWS
-You only need an EC2 instance at AWS in order to run a Taraxa-node. To get started with AWS EC2 see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
+# Running Ebla-node at AWS
+You only need an EC2 instance at AWS in order to run a Ebla-node. To get started with AWS EC2 see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
 
 ## One Click Install
 You need an AWS account with configured credentials. If you'd like the ability to ssh into your EC2 instance you will need to setup an ssh key for use with EC2, follow these [instructions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair).
 
-To have your Taraxa-node running just run:
+To have your Ebla-node running just run:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/one-click-AWS.sh)"
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-AWS.sh)"
 ```
-or if you already have an ssh key to use with your Taraxa-node, run the command and pass in the name of your ssh key:
+or if you already have an ssh key to use with your Ebla-node, run the command and pass in the name of your ssh key:
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/one-click-AWS.sh)" {KEYNAME}
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/one-click-AWS.sh)" {KEYNAME}
 ```
 Each time you run the script a new ec2 instance will be created.

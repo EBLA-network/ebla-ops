@@ -10,21 +10,21 @@ if [[ "$0" == "light" || "$1" == "light" || "$2" == "light" ]]; then
     NODETYPE+="-light"
 fi
 
-SHELL_LOG_PREFIX='[taraxa-oneclick-aws]'
+SHELL_LOG_PREFIX='[ebla-oneclick-aws]'
 
-BASE_NAME=taraxa-node-oneclick
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick-aws
-AWS_PATH=${TARAXA_ONE_CLICK_PATH}/aws/bin/aws
-USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+BASE_NAME=ebla-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick-aws
+AWS_PATH=${EBLA_ONE_CLICK_PATH}/aws/bin/aws
+USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
 # SSH KEY to connect to crated instance
-AWS_KEY_NAME="taraxa-node-keypair"
+AWS_KEY_NAME="ebla-node-keypair"
 # t2.xlarge - 4 CPU + 16 GB RAM + EBS SSD
 AWS_INSTANCE=t2.xlarge
 # just in case no default region is configured
 export AWS_DEFAULT_REGION=us-east-1
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 function check_deps() {
     if ! [ -x "$(command -v jq)" -a -x "$(command -v unzip)" ]; then
@@ -67,7 +67,7 @@ elif [ "$OS" == "linux" ]; then
     if ! [ -x $AWS_PATH ]; then
         curl -fsSL "https://awscli.amazonaws.com/awscli-exe-${OS}-${ARCH}.zip" -o awscli2.zip
         unzip awscli2.zip
-        $TARAXA_ONE_CLICK_PATH/aws/install -i $TARAXA_ONE_CLICK_PATH/aws/installed -b $TARAXA_ONE_CLICK_PATH/aws/bin
+        $EBLA_ONE_CLICK_PATH/aws/install -i $EBLA_ONE_CLICK_PATH/aws/installed -b $EBLA_ONE_CLICK_PATH/aws/bin
     else
         echo $SHELL_LOG_PREFIX aws cli already installed
     fi
@@ -93,7 +93,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${USERDATA_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1
@@ -112,7 +112,7 @@ REGIONS=($($AWS_PATH ec2 describe-regions --output json \
 | jq '.Regions[] | select(.OptInStatus=="opt-in-not-required" or .OptInStatus=="opted-in") | .RegionName' \
 | sed 's/"//g'))
 export AWS_DEFAULT_REGION=${REGIONS[$RANDOM % ${#REGIONS[@]}]}
-echo "$SHELL_LOG_PREFIX Creating taraxa node in $AWS_DEFAULT_REGION region"
+echo "$SHELL_LOG_PREFIX Creating ebla node in $AWS_DEFAULT_REGION region"
 
 # Find ubuntu focal image
 AWS_IMAGE_AMI=$($AWS_PATH ec2 describe-images \
@@ -121,33 +121,33 @@ jq ".Images[0] | .ImageId" | sed 's/"//g')
 #echo "SELECTED $AWS_IMAGE_AMI"
 
 # access keypair generation
-AWS_KEY_PATH=$TARAXA_ONE_CLICK_PATH/${AWS_KEY_NAME}_${AWS_DEFAULT_REGION}_private.pem
+AWS_KEY_PATH=$EBLA_ONE_CLICK_PATH/${AWS_KEY_NAME}_${AWS_DEFAULT_REGION}_private.pem
 echo "$SHELL_LOG_PREFIX generating key-pair to access your node"
 $AWS_PATH ec2 describe-key-pairs --key-name $AWS_KEY_NAME &> /dev/null || \
 $AWS_PATH ec2 create-key-pair --key-name $AWS_KEY_NAME --query 'KeyMaterial' --output text > $AWS_KEY_PATH
 chmod 400 $AWS_KEY_PATH
 echo "$SHELL_LOG_PREFIX WARNING! please save file $AWS_KEY_PATH it will be required to connect to your node via SSH later"
 
-$AWS_PATH ec2 create-security-group --group-name TaraxaNodeSecurityGroup --description "Security Group for Taraxa node" &> /dev/null
-# Export SSH and all ports required for the taraxa node
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol tcp --port 22 --cidr 0.0.0.0/0 &> /dev/null
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol tcp --port 3000 --cidr 0.0.0.0/0 &> /dev/null
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol tcp --port 7777 --cidr 0.0.0.0/0 &> /dev/null
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol tcp --port 8777 --cidr 0.0.0.0/0 &> /dev/null
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol tcp --port 10002 --cidr 0.0.0.0/0 &> /dev/null
-$AWS_PATH ec2 authorize-security-group-ingress --group-name TaraxaNodeSecurityGroup --protocol udp --port 10002 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 create-security-group --group-name EblaNodeSecurityGroup --description "Security Group for Ebla node" &> /dev/null
+# Export SSH and all ports required for the ebla node
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol tcp --port 22 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol tcp --port 3000 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol tcp --port 7777 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol tcp --port 8777 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol tcp --port 10002 --cidr 0.0.0.0/0 &> /dev/null
+$AWS_PATH ec2 authorize-security-group-ingress --group-name EblaNodeSecurityGroup --protocol udp --port 10002 --cidr 0.0.0.0/0 &> /dev/null
 
 # RUN IT
-$AWS_PATH ec2 run-instances --image-id $AWS_IMAGE_AMI --key-name $AWS_KEY_NAME --security-groups TaraxaNodeSecurityGroup \
+$AWS_PATH ec2 run-instances --image-id $AWS_IMAGE_AMI --key-name $AWS_KEY_NAME --security-groups EblaNodeSecurityGroup \
   --instance-type $AWS_INSTANCE \
-  --user-data file://$USERDATA_SCRIPT --count 1 --output json > $TARAXA_ONE_CLICK_PATH/created_instance_data.json
+  --user-data file://$USERDATA_SCRIPT --count 1 --output json > $EBLA_ONE_CLICK_PATH/created_instance_data.json
 
 if [ $? -ne 0 ]; then
    echo $SHELL_LOG_PREFIX Error creating EC2 instance on $AWS_DEFAULT_REGION region.
    exit 4
 fi
 
-INSTANCE_ID=$(jq ".Instances[0] | .InstanceId" $TARAXA_ONE_CLICK_PATH/created_instance_data.json | sed 's/"//g')
+INSTANCE_ID=$(jq ".Instances[0] | .InstanceId" $EBLA_ONE_CLICK_PATH/created_instance_data.json | sed 's/"//g')
 echo -n $SHELL_LOG_PREFIX Node creation request is approved, waiting 20 seconds while node is starting
 for i in `seq 1 20`; do echo -n '.'; sleep 1; done
 echo

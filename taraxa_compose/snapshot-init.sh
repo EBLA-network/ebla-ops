@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-DATA_PATH="/opt/taraxa_data/data"
+DATA_PATH="/opt/ebla_data/data"
 NETWORK="${NETWORK:-mainnet}"
 NODE_TYPE="${NODE_TYPE:-light}"
 DELETE_DATA="${DELETE_DATA:-false}"
@@ -36,7 +36,7 @@ if [ -n "$SNAPSHOT_URL" ]; then
     echo "Using provided snapshot URL: $SNAPSHOT_URL"
 else
     echo "Fetching snapshot URL from API..."
-    SNAPSHOT_URL=$(curl "https://snapshots.taraxa.io/api?network=$NETWORK" -s | jq -r ".$NODE_TYPE.url")
+    SNAPSHOT_URL=$(curl "https://snapshots.eblanetwork.com/api?network=$NETWORK" -s | jq -r ".$NODE_TYPE.url")
     
     if [ -z "$SNAPSHOT_URL" ] || [ "$SNAPSHOT_URL" = "null" ]; then
         echo "Failed to fetch snapshot URL from API. Skipping snapshot download."

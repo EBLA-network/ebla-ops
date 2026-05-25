@@ -10,23 +10,23 @@ if [[ "$0" == "light" || "$1" == "light" || "$2" == "light" ]]; then
     NODETYPE+="-light"
 fi
 
-SHELL_LOG_PREFIX='[taraxa-oneclick-hetzner]'
+SHELL_LOG_PREFIX='[ebla-oneclick-hetzner]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 
-HCLOUD_PATH=${TARAXA_ONE_CLICK_PATH}/hcloud
+HCLOUD_PATH=${EBLA_ONE_CLICK_PATH}/hcloud
 HCLOUD_VERSION=1.24.0
 
-HCLOUD_USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
-HCLOUD_BASE_NAME=taraxa-node-oneclick
+HCLOUD_USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+HCLOUD_BASE_NAME=ebla-node-oneclick
 # Ubuntu 20.04 x64
 HCLOUD_IMAGE_ID=ubuntu-20.04
 # cpx31 - shared 4 CPU + 8 GB RAM + 160 GB NVMe
 HCLOUD_PLAN_ID="cpx31"
 HCLOUD_LOCATION="1"
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 # Get hcloud script
 echo "$SHELL_LOG_PREFIX begin to download hcloud cli..."
@@ -65,13 +65,13 @@ else
     chmod +x $HCLOUD_PATH
 fi
 if [[ -z $HCLOUD_TOKEN ]]; then 
-    $HCLOUD_PATH context list | grep -q taraxa-oneclick-access 
+    $HCLOUD_PATH context list | grep -q ebla-oneclick-access 
     if [ $? -eq 0 ]; then
-        echo "$SHELL_LOG_PREFIX Found taraxa-oneclick-access context using it"
-        $HCLOUD_PATH context use taraxa-oneclick-access
+        echo "$SHELL_LOG_PREFIX Found ebla-oneclick-access context using it"
+        $HCLOUD_PATH context use ebla-oneclick-access
     else
-        echo "$SHELL_LOG_PREFIX Not found taraxa-oneclick-access context, creating it"
-        $HCLOUD_PATH context create taraxa-oneclick-access
+        echo "$SHELL_LOG_PREFIX Not found ebla-oneclick-access context, creating it"
+        $HCLOUD_PATH context create ebla-oneclick-access
     fi
 else
         echo "$SHELL_LOG_PREFIX Found HCLOUD_TOKEN env variable using it"
@@ -79,7 +79,7 @@ fi;
 $HCLOUD_PATH server list > /dev/null || { echo "$SHELL_LOG_PREFIX Invalid Token." ; exit 1 ; }
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${HCLOUD_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${HCLOUD_USERDATA_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1

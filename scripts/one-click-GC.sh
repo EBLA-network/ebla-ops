@@ -47,14 +47,14 @@ if [[ "$0" == "light" || "$1" == "light" || "$2" == "light" ]]; then
     NODETYPE+="-light"
 fi
 
-SHELL_LOG_PREFIX='[taraxa-oneclick-gc]'
+SHELL_LOG_PREFIX='[ebla-oneclick-gc]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
-STARTUP_SCRIPT=https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
+STARTUP_SCRIPT=https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh
 
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${STARTUP_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${STARTUP_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1
@@ -69,7 +69,7 @@ STARTUP_SCRIPT_CONTENT=${STARTUP_SCRIPT_CONTENT//"REPLACEWITHNODETYPE"/"$NODETYP
 
 # TODO 
 NODE_SKU=e2-standard-4 # 4 core, 16gb ram 
-NODE_BASE_NAME=taraxa-node
+NODE_BASE_NAME=ebla-node
 
 RND_STR=$(head /dev/urandom | LC_CTYPE=C tr -dc a-z0-9 | head -c 8 ; echo '')
 GC_PROJECT_NAME=${NODE_BASE_NAME}-project-$RND_STR
@@ -86,8 +86,8 @@ else
     echo "Found $PYTHON3_INSTALLED $PYTHON_INSTALLED"
 fi
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 echo "Checking for Google Cloud SDK CLI..."
 GC_CLI_INSTALLED=$(gcloud version | grep 'Google Cloud SDK')

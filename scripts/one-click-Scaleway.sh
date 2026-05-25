@@ -12,23 +12,23 @@ fi
 
 SHELL_LOG_PREFIX='[oneclick-scaleway]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 
-SCWCLI_PATH=${TARAXA_ONE_CLICK_PATH}/scw
+SCWCLI_PATH=${EBLA_ONE_CLICK_PATH}/scw
 SCWCLI_VERSION=2.3.1
 
-JQCLI_PATH=${TARAXA_ONE_CLICK_PATH}/jq
+JQCLI_PATH=${EBLA_ONE_CLICK_PATH}/jq
 
-DROPLET_BASE_NAME=taraxa-node-oneclick
+DROPLET_BASE_NAME=ebla-node-oneclick
 # Ubuntu 20.04 Focal Fossa
 DROPLET_IMAGE_ID="ubuntu_focal"
 DROPLET_REGION_ID="fr-par-1"
 # DEV1-L: 4C/8G/80GB NVMe/400Mbps 
 DROPLET_INSTANCE_TYPE_ID="DEV1-L"
-DROPLET_SCRIPT_NAME="taraxa-node-oneclick"
+DROPLET_SCRIPT_NAME="ebla-node-oneclick"
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 # Get scaleway-cli (we want it to always overwrite it)
 ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
@@ -82,7 +82,7 @@ if [ $? != 0 ] || [ ! -f "$JQCLI_PATH" ]; then
 else
     echo "$SHELL_LOG_PREFIX download jq json parser success!"
 fi
-echo '{"note": "Taraxa is an excellent project!"}' | $JQCLI_PATH '.note' > /dev/null || { echo "$SHELL_LOG_PREFIX Jq parser failed, it is possible that the script is not suitable for your operating system." ; exit 1 ; }
+echo '{"note": "Ebla is an excellent project!"}' | $JQCLI_PATH '.note' > /dev/null || { echo "$SHELL_LOG_PREFIX Jq parser failed, it is possible that the script is not suitable for your operating system." ; exit 1 ; }
 
 # Check permissions
 # How to get scaleway AK: https://console.scaleway.com/project/credentials
@@ -99,14 +99,14 @@ echo "$SHELL_LOG_PREFIX begin to detect or generate ssh key..."
 ACCOUNT_SSH_KEY_NUMBER=$($SCWCLI_PATH account ssh-key list -o json | $JQCLI_PATH 'length')
 if [ $ACCOUNT_SSH_KEY_NUMBER == 0 ]; then
     echo "$SHELL_LOG_PREFIX There is no ssh public key in the default project and organization."
-	SSH_KEY_PATH=$(echo "$HOME/.ssh/taraxa_node_oneclick_rsa.pub")
+	SSH_KEY_PATH=$(echo "$HOME/.ssh/ebla_node_oneclick_rsa.pub")
     if [ -f $SSH_KEY_PATH ]; then
-        echo "$SHELL_LOG_PREFIX found ~/.ssh/taraxa_node_oneclick_rsa.pub, we will use it."
+        echo "$SHELL_LOG_PREFIX found ~/.ssh/ebla_node_oneclick_rsa.pub, we will use it."
     else
         echo "$SHELL_LOG_PREFIX begin to generate ssh key..."
-        ssh-keygen -t rsa -b 4096 -P "" -f ~/.ssh/taraxa_node_oneclick_rsa -C "root"
+        ssh-keygen -t rsa -b 4096 -P "" -f ~/.ssh/ebla_node_oneclick_rsa -C "root"
     fi
-    ACCOUNT_SSH_KEY_ADD=$($SCWCLI_PATH account ssh-key add name=taraxa-node-oneclick public-key="$(cat ~/.ssh/taraxa_node_oneclick_rsa.pub)")
+    ACCOUNT_SSH_KEY_ADD=$($SCWCLI_PATH account ssh-key add name=ebla-node-oneclick public-key="$(cat ~/.ssh/ebla_node_oneclick_rsa.pub)")
 	if [ $? != 0 ]; then
         echo "$SHELL_LOG_PREFIX Add ssh public key to your default project failed, please try again..."
         exit 1
@@ -136,11 +136,11 @@ echo "$SHELL_LOG_PREFIX Building cloud-init command..."
 DROPLET_USERDATA_SCRIPT=$(cat << EOF
 #cloud-config
 runcmd:
-   - mkdir /taraxa-oneclick
-   - curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output /taraxa-oneclick/bootstrap-userdata.sh
-   - sed -i -e 's/REPLACEWITHNODETYPE/${NODETYPE}/g' /taraxa-oneclick/bootstrap-userdata.sh
-   - chmod 755 /taraxa-oneclick/bootstrap-userdata.sh
-   - /taraxa-oneclick/bootstrap-userdata.sh
+   - mkdir /ebla-oneclick
+   - curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output /ebla-oneclick/bootstrap-userdata.sh
+   - sed -i -e 's/REPLACEWITHNODETYPE/${NODETYPE}/g' /ebla-oneclick/bootstrap-userdata.sh
+   - chmod 755 /ebla-oneclick/bootstrap-userdata.sh
+   - /ebla-oneclick/bootstrap-userdata.sh
 EOF
 )
 echo "$DROPLET_USERDATA_SCRIPT"

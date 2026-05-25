@@ -30,17 +30,17 @@ if [[ "$0" == "light" || "$1" == "light" || "$2" == "light" ]]; then
     NODETYPE+="-light"
 fi
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 NODE_SKU=F4 # 4 core, 8gb ram
-NODE_BASE_NAME=taraxa-node-az-oneclick
-NODE_BOOTSTRAP_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-node.sh
+NODE_BASE_NAME=ebla-node-az-oneclick
+NODE_BOOTSTRAP_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-node.sh
 
 RND_STR=$(head /dev/urandom | LC_CTYPE=C tr -dc a-z0-9 | head -c 8 ; echo '')
 AZ_GROUP_NAME=${NODE_BASE_NAME}-group-$RND_STR
 AZ_APP_SERVICE_NAME=${NODE_BASE_NAME}-app-$RND_STR
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 echo "Checking for Azure CLI..."
 AZ_CLI_INSTALLED=$(az version | grep azure-cli)
@@ -165,7 +165,7 @@ az vm extension set \
   --resource-group ${AZ_GROUP_NAME} \
   --vm-name ${AZ_APP_SERVICE_NAME} --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh"],"commandToExecute": "sed -i -e 's/REPLACEWITHNODETYPE/$NODETYPE/g' ./ubuntu-install-and-run-node.sh && ./ubuntu-install-and-run-node.sh"}' > /dev/null
+  --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh"],"commandToExecute": "sed -i -e 's/REPLACEWITHNODETYPE/$NODETYPE/g' ./ubuntu-install-and-run-node.sh && ./ubuntu-install-and-run-node.sh"}' > /dev/null
 
 if [ $? != 0 ]; then 
   echo "Error creating VM"

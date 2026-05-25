@@ -11,10 +11,10 @@ import time
 from eth_account import Account
 from eth_utils.curried import keccak
 
-DROPLET_BASE_NAME = "taraxa-node-oneclick"
+DROPLET_BASE_NAME = "ebla-node-oneclick"
 DROPLET_SIZE = "c-4"
 DROPLET_IMAGE = "ubuntu-20-04-x64"
-DROPLET_USER_DATA_SCRIPT = "https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/prepare/do.sh"
+DROPLET_USER_DATA_SCRIPT = "https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/prepare/do.sh"
 VOLUME_SIZE = 250
 
 @click.group()
@@ -89,7 +89,7 @@ def create(nodes, project=None, explorer_key=None):
                     sig_hex = sig.signature.hex()
 
                     delegate_response = requests.get(
-                        f'https://explorer.testnet.taraxa.io/api/delegate/0x{wallet}?sig={sig_hex}')
+                        f'https://explorer.testnet.eblanetwork.com/api/delegate/0x{wallet}?sig={sig_hex}')
 
             except:
                 click.echo(

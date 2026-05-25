@@ -10,17 +10,17 @@ if [[ "$0" == "light" || "$1" == "light" || "$2" == "light" ]]; then
     NODETYPE+="-light"
 fi
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
-DOCTL_PATH=${TARAXA_ONE_CLICK_PATH}/doctl
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
+DOCTL_PATH=${EBLA_ONE_CLICK_PATH}/doctl
 DOCTL_VERSION=1.59.0
-DROPLET_USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+DROPLET_USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
 DROPLET_SIZE=c-4
-DROPLET_BASE_NAME=taraxa-node-oneclick
+DROPLET_BASE_NAME=ebla-node-oneclick
 DROPLET_IMAGE=ubuntu-20-04-x64
 DROPLET_VOLUME_SIZE=250GiB
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 # Get doctl (we want it to always overwrite it)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -39,7 +39,7 @@ if [ "$RETURN" != 0 ]; then
 fi
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/prepare/do.sh --output ${DROPLET_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/prepare/do.sh --output ${DROPLET_USERDATA_SCRIPT}
 
 # Set the node type in the ubuntu install script
 DROPLET_USERDATA_SCRIPT_CONTENT=$(cat "$DROPLET_USERDATA_SCRIPT")

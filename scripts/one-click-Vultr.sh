@@ -12,21 +12,21 @@ fi
 
 SHELL_LOG_PREFIX='[oneclick-vultr]'
 
-TARAXA_ONE_CLICK_PATH=${HOME}/taraxa-node-oneclick
+EBLA_ONE_CLICK_PATH=${HOME}/ebla-node-oneclick
 
-VCLI_PATH=${TARAXA_ONE_CLICK_PATH}/vultr-cli
+VCLI_PATH=${EBLA_ONE_CLICK_PATH}/vultr-cli
 VCLI_VERSION=2.5.3
 
-DROPLET_USERDATA_SCRIPT=${TARAXA_ONE_CLICK_PATH}/bootstrap-userdata.sh
-DROPLET_BASE_NAME=taraxa-node-oneclick
+DROPLET_USERDATA_SCRIPT=${EBLA_ONE_CLICK_PATH}/bootstrap-userdata.sh
+DROPLET_BASE_NAME=ebla-node-oneclick
 # Ubuntu 20.04 x64
 DROPLET_IMAGE_ID=387
 DROPLET_PLAN_ID="vc2-4c-8gb"
 DROPLET_REGION_ID="ams"
-DROPLET_SCRIPT_NAME="taraxa-node-oneclick"
+DROPLET_SCRIPT_NAME="ebla-node-oneclick"
 
-mkdir -p ${TARAXA_ONE_CLICK_PATH}
-cd ${TARAXA_ONE_CLICK_PATH}
+mkdir -p ${EBLA_ONE_CLICK_PATH}
+cd ${EBLA_ONE_CLICK_PATH}
 
 # Get vultr-cli (we want it to always overwrite it)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -57,7 +57,7 @@ if [[ -z $VULTR_API_KEY ]]; then
 fi
 
 # Get current bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
+curl -fsSL https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh --output ${DROPLET_USERDATA_SCRIPT}
 if [ $? != 0 ]; then
     echo "$SHELL_LOG_PREFIX download bootstrap script failed! You can try again."
     exit 1

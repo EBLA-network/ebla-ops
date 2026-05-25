@@ -15,7 +15,7 @@ fi
 sleep 1 && curl -s https://api.nodes.guru/logo.sh | bash && sleep 1
 
 function setupVars {
-	echo 'TARAXA_NODE_PATH=/var/taraxa' >> $HOME/.bash_profile
+	echo 'EBLA_NODE_PATH=/var/ebla' >> $HOME/.bash_profile
 	. $HOME/.bash_profile
 	sleep 1
 }
@@ -42,25 +42,25 @@ function installDeps {
 
 function installSoftware {
 	echo -e '\n\e[42mInstall software\e[0m\n' && sleep 1
-	wget https://github.com/Taraxa-project/taraxa-ops/archive/refs/heads/master.zip && unzip master.zip && rm -f master.zip
-	cd $HOME/taraxa-ops-master/taraxa_compose
+	wget https://github.com/EBLA-network/ebla-ops/archive/refs/heads/master.zip && unzip master.zip && rm -f master.zip
+	cd $HOME/ebla-ops-master/ebla_compose
 	echo -e '\n\e[42mRunning\e[0m\n' && sleep 1
 	sudo docker-compose up -d --force-recreate
 }
 
 function checkStatus {
 echo -e '\n\e[42mCheck node status\e[0m\n' && sleep 1
-if [[ `docker ps --filter status=running --format "{{.Names}}" | grep taraxa_compose_node_1` =~ "taraxa_compose_node_1" ]]; then
-  echo -e "Your Taraxa node \e[32minstalled and works\e[39m!"
+if [[ `docker ps --filter status=running --format "{{.Names}}" | grep ebla_compose_node_1` =~ "ebla_compose_node_1" ]]; then
+  echo -e "Your Ebla node \e[32minstalled and works\e[39m!"
   echo -e "You can check node status by the command \e[7mdocker ps\e[0m"
 else
-  echo -e "Your Taraxa node \e[31mwas not installed correctly\e[39m, please reinstall."
+  echo -e "Your Ebla node \e[31mwas not installed correctly\e[39m, please reinstall."
 fi
 . $HOME/.bash_profile
 }
 
-function deleteTaraxa {
-	cd $HOME/taraxa-ops-master/taraxa_compose
+function deleteEbla {
+	cd $HOME/ebla-ops-master/ebla_compose
 	docker-compose down
 }
 
@@ -87,8 +87,8 @@ do
             ;;
 		"Delete")
             echo -e '\n\e[31mYou choose delete...\e[0m\n' && sleep 1
-			deleteTaraxa
-			echo -e '\n\e[42mTaraxa was deleted!\e[0m\n' && sleep 1
+			deleteEbla
+			echo -e '\n\e[42mEbla was deleted!\e[0m\n' && sleep 1
 			break
             ;;
         "Quit")

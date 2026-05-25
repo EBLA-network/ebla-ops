@@ -10,7 +10,7 @@ sudo mkdir -p /var/lib/docker
 sudo mount -o discard,defaults,noatime /dev/disk/by-id/${VOLUME} /var/lib/docker
 echo "/dev/disk/by-id/${VOLUME} /var/lib/docker ext4 defaults,nofail,discard 0 0" | sudo tee -a /etc/fstab
 
-wget -O ubuntu-install-and-run-node.sh https://raw.githubusercontent.com/Taraxa-project/taraxa-ops/master/scripts/ubuntu-install-and-run-node.sh
+wget -O ubuntu-install-and-run-node.sh https://raw.githubusercontent.com/EBLA-network/ebla-ops/master/scripts/ubuntu-install-and-run-node.sh
 
 #sed -i -e 's/REPLACEWITHNODETYPE/$NODETYPE/g' ubuntu-install-and-run-node.sh
 

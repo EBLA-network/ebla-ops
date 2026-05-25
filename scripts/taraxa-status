@@ -4,11 +4,11 @@ RPC_ADDRESS=localhost
 RPC_PORT=7777
 MY_ADDRESS=$(grep Address /opt/ethereum-generate-wallet/generated-account.txt | cut -d':' -f2 | sed 's/     0x//g')
 
-BALANCE=$(taraxa-check-balance)
+BALANCE=$(ebla-check-balance)
 
-NODECOUNT=$(taraxa-node-count)
+NODECOUNT=$(ebla-node-count)
 
-PEERCOUNT=$(taraxa-peer-count)
+PEERCOUNT=$(ebla-peer-count)
 
 DATA=$(cat <<EOF
 {

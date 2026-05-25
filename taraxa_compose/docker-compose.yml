@@ -3,14 +3,14 @@ services:
   snapshot-puller:
     image: alpine:latest
     volumes:
-      - ./data:/opt/taraxa_data/data
+      - ./data:/opt/ebla_data/data
       - ./snapshot-init.sh:/snapshot-init.sh:ro
     environment:
       - NETWORK=testnet
       - NODE_TYPE=full
     command: /bin/sh /snapshot-init.sh
   node:
-    image: taraxa/taraxa-node:testnet-13297
+    image: ebla-network/ebla-node:testnet-13297
     restart: always
     ports:
       - "10002:10002"
@@ -19,16 +19,16 @@ services:
       - "8777:8777"
     entrypoint: /usr/bin/sh
     command: >
-      -c "mkdir -p /opt/taraxa_data/data &&
-          taraxad --chain testnet --wallet /opt/taraxa_data/conf/wallet.json --config /opt/taraxa_data/conf/testnet.json --data-dir /opt/taraxa_data/data --overwrite-config --rpc.enable-test-rpc"
+      -c "mkdir -p /opt/ebla_data/data &&
+          eblad --chain testnet --wallet /opt/ebla_data/conf/wallet.json --config /opt/ebla_data/conf/testnet.json --data-dir /opt/ebla_data/data --overwrite-config --rpc.enable-test-rpc"
     volumes:
-      - ./config:/opt/taraxa_data/conf
-      - ./data:/opt/taraxa_data/data
+      - ./config:/opt/ebla_data/conf
+      - ./data:/opt/ebla_data/data
     depends_on:
       snapshot-puller:
         condition: service_completed_successfully
   status-app:
-    image: taraxa/taraxa-node-status:latest
+    image: ebla-network/ebla-node-status:latest
     environment:
       - NEXT_PUBLIC_RPC=http://node:7777
     restart: always
