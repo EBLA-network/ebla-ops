@@ -1,13 +1,4 @@
 services:
-  snapshot-puller:
-    image: alpine:latest
-    volumes:
-      - ./data:/opt/ebla_data/data
-      - ./snapshot-init.sh:/snapshot-init.sh:ro
-    environment:
-      - NETWORK=mainnet
-      - NODE_TYPE=light
-    command: /bin/sh /snapshot-init.sh
   node:
     image: ghcr.io/ebla-network/ebla-node:ebla-stable
     restart: always
@@ -23,17 +14,12 @@ services:
     volumes:
       - ./config:/opt/ebla_data/conf
       - ./data:/opt/ebla_data/data
-    depends_on:
-      snapshot-puller:
-        condition: service_completed_successfully
   status-app:
     image: ghcr.io/ebla-network/ebla-node-status:ebla-stable
     environment:
       - NEXT_PUBLIC_RPC=http://node:7777
     restart: always
     depends_on:
-      snapshot-puller:
-        condition: service_completed_successfully
       node:
         condition: service_started
     ports:

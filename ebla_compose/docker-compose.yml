@@ -1,14 +1,5 @@
 version: "3.8"
 services:
-  snapshot-puller:
-    image: alpine:latest
-    volumes:
-      - ./data:/opt/ebla_data/data
-      - ./snapshot-init.sh:/snapshot-init.sh:ro
-    environment:
-      - NETWORK=testnet
-      - NODE_TYPE=light
-    command: /bin/sh /snapshot-init.sh
   node:
     image: ghcr.io/ebla-network/ebla-node:ebla-stable
     restart: always
@@ -20,21 +11,16 @@ services:
     entrypoint: /usr/bin/sh
     command: >
       -c "mkdir -p /opt/ebla_data/data &&
-          eblad --chain testnet --wallet /opt/ebla_data/conf/wallet.json --config /opt/ebla_data/conf/testnet.json --data-dir /opt/ebla_data/data --overwrite-config --light --rpc.enable-test-rpc"
+          eblad --chain testnet --wallet /opt/ebla_data/conf/wallet.json --config /opt/ebla_data/conf/testnet.json --data-dir /opt/ebla_data/data --overwrite-config --rpc.enable-test-rpc"
     volumes:
       - ./config:/opt/ebla_data/conf
       - ./data:/opt/ebla_data/data
-    depends_on:
-      snapshot-puller:
-        condition: service_completed_successfully
   status-app:
     image: ghcr.io/ebla-network/ebla-node-status:ebla-stable
     environment:
       - NEXT_PUBLIC_RPC=http://node:7777
     restart: always
     depends_on:
-      snapshot-puller:
-        condition: service_completed_successfully
       node:
         condition: service_started
     ports:
